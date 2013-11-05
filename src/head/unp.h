@@ -1,8 +1,10 @@
-/* include unph */
-/* Our own header.  Tabs are set for 4 spaces, not 8 */
+/* include unph: unix network programing*/
 
 #ifndef	__unp_h
 #define	__unp_h
+
+#define EXIT_FAILURE 1
+#define EXIT_SUCCESS 0
 
 #include	<sys/types.h>	/* basic system data types */
 #include	<sys/socket.h>	/* basic socket definitions */
@@ -52,4 +54,5 @@
 # include	<pthread.h>
 #endif
 
-#endif	/* __unp_h */
+#endif	
+/* __unp_h */
