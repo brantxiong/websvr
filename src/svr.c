@@ -1,7 +1,8 @@
 #include "head/unp.h"
 #include "head/svr.h"
+#include "head/log.h"
 
-#define CONNMAX 1000
+#define CONNMAX 10
 #define BYTES 1024
 
 int listenfd, clients[CONNMAX];
@@ -25,17 +26,21 @@ void MainServer(char *dir, int port)
         clients[slot] = accept (listenfd, (struct sockaddr *) &clientaddr, &addrlen);
 
         if (clients[slot]<0)
-            error ("accept() error");
+            ErrorLog("WARNING", "accept() error");
         else
         {
             if ( fork()==0 )
             {
                 respond(slot, dir);
-                exit(0);
+                exit(EXIT_SUCCESS);
             }
         }
 
+        printf("\n\nbefore: clients[slot]: %d", clients[slot]);
+
         while (clients[slot]!=-1) slot = (slot+1)%CONNMAX;
+
+        printf("\n\nafter: clients[slot]: %d", clients[slot]);
     }
 }
 
@@ -43,7 +48,7 @@ void MainServer(char *dir, int port)
 void startServer(int port)
 {
     struct addrinfo hints, *res, *p;
-    char port_str[15];
+    char port_str[5];
 	sprintf(port_str, "%d", port);
 
     // getaddrinfo for host
@@ -53,8 +58,8 @@ void startServer(int port)
     hints.ai_flags = AI_PASSIVE;
     if (getaddrinfo( NULL, port_str, &hints, &res) != 0)
     {
-        perror ("getaddrinfo() error");
-        exit(1);
+        ErrorLog("FATAL", "getaddrinfo() error");
+        exit(EXIT_FAILURE);
     }
     // socket and bind
     for (p = res; p!=NULL; p=p->ai_next)
@@ -65,8 +70,8 @@ void startServer(int port)
     }
     if (p==NULL)
     {
-        perror ("socket() or bind()");
-        exit(1);
+        ErrorLog("FATAL", "socket() or bind() error");
+        exit(EXIT_FAILURE);
     }
 
     freeaddrinfo(res);
@@ -74,8 +79,8 @@ void startServer(int port)
     // listen for incoming connections
     if ( listen (listenfd, 1000000) != 0 )
     {
-        perror("listen() error");
-        exit(1);
+        ErrorLog("FATAL", "listen() error");
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -90,9 +95,9 @@ void respond(int n, char *dir)
     rcvd=recv(clients[n], mesg, 99999, 0);
 
     if (rcvd<0)    // receive error
-        fprintf(stderr,("recv() error\n"));
+        ErrorLog("FATAL", "recv() error");
     else if (rcvd==0)    // receive socket closed
-        fprintf(stderr,"Client disconnected upexpectedly.\n");
+        AccessLog("124.33.3.3", "Client disconnected upexpectedly.");
     else    // message received
     {
         printf("%s", mesg);
