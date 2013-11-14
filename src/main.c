@@ -7,9 +7,7 @@
 int main(int argc, char const *argv[])
 {
     char *dir = (char *) malloc(sizeof(char) * (MAX_DIR_LENGTH));
-    ReadServerDir(dir);
-
-    MainServer(dir, ReadServerPort());
-
+    ParseCfgSeverDir(dir);
+    StartServer(dir, ParseCfgServerPort());
     return 0;
 }

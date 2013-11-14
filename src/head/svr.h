@@ -2,7 +2,6 @@
 #define _SVR_H_
 
 void MainServer(char *dir, int port);
-void startServer(int port);
-void respond(int n, char *dir);
+void StartServer(char *dir, int port);
 
 #endif

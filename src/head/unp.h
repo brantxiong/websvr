@@ -3,9 +3,6 @@
 #ifndef	__unp_h
 #define	__unp_h
 
-#define EXIT_FAILURE 1
-#define EXIT_SUCCESS 0
-
 #include	<sys/types.h>	/* basic system data types */
 #include	<sys/socket.h>	/* basic socket definitions */
 #include	<sys/time.h>	/* timeval{} for select() */
@@ -54,5 +51,5 @@
 # include	<pthread.h>
 #endif
 
-#endif	
+#endif
 /* __unp_h */

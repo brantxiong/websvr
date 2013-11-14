@@ -1,4 +1,4 @@
-#include "lib/libconfig.h"
+#include "cfglib/include/libconfig.h"
 #include "head/unp.h"
 
 #define CONF_FILE "conf/websvr.cfg"
@@ -19,7 +19,7 @@ void InitCfgStruct(config_t *cfg)
     }
 }
 
-void ReadServerDir(char *dir)
+void ParseCfgSeverDir(char *dir)
 {
     config_t cfg;
     config_setting_t *setting;
@@ -48,7 +48,7 @@ void ReadServerDir(char *dir)
     config_destroy(&cfg);
 }
 
-int ReadServerPort()
+int ParseCfgServerPort()
 {
     config_t cfg;
     config_setting_t *setting;
