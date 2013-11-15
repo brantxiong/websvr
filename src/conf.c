@@ -1,8 +1,16 @@
+/*
+ Copyright (c) 2013 by XiongBo.  All Rights Reserved.
+*/
+
 #include "cfglib/include/libconfig.h"
 #include "head/unp.h"
 
 #define CONF_FILE "conf/websvr.cfg"
 
+/**
+ * Initialize libconfig struct
+ * @param cfg
+ */
 void InitCfgStruct(config_t *cfg)
 {
     char *config_file_name = CONF_FILE;
@@ -19,6 +27,10 @@ void InitCfgStruct(config_t *cfg)
     }
 }
 
+/**
+ * Parse dir information in server section
+ * @param dir 
+ */
 void ParseCfgSeverDir(char *dir)
 {
     config_t cfg;
@@ -40,7 +52,7 @@ void ParseCfgSeverDir(char *dir)
     }
     else
     {
-        printf("\nNo 'server' setting in configuration file.");
+        printf("\nNo 'dir' setting in configuration file.");
         config_destroy(&cfg);
         exit(EXIT_FAILURE);
     }
@@ -48,6 +60,10 @@ void ParseCfgSeverDir(char *dir)
     config_destroy(&cfg);
 }
 
+/**
+ * Parse 'port' in the 'server' section
+ * @return port number
+ */
 int ParseCfgServerPort()
 {
     config_t cfg;

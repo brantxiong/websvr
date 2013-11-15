@@ -1,3 +1,7 @@
+/*
+Copyright (c) 2013 by XiongBo.  All Rights Reserved.
+*/
+
 /* include unph: unix network programing*/
 
 #ifndef	__unp_h

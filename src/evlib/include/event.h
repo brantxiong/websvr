@@ -172,7 +172,7 @@ extern "C" {
 #include <stdarg.h>
 
 /* For int types. */
-#include <evutil.h>
+#include "evutil.h"
 
 #ifdef WIN32
 #define WIN32_LEAN_AND_MEAN

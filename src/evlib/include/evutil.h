@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-#include <event-config.h>
+#include "event-config.h"
 #ifdef _EVENT_HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif

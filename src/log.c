@@ -1,6 +1,15 @@
+/*
+ Copyright (c) 2013 by XiongBo.  All Rights Reserved.
+*/
+
 #include "head/log.h"
 #include "head/unp.h"
 
+/**
+ * Record access log
+ * @param ip   user ip
+ * @param info request information
+ */
 void AccessLog(char *ip, char *info)
 {
     FILE *access_log_fp = fopen("log/access.log", "a");
@@ -17,6 +26,11 @@ void AccessLog(char *ip, char *info)
     fclose(access_log_fp);
 }
 
+/**
+ * Record error or warning log
+ * @param level 
+ * @param info 
+ */
 void ErrorLog(char *level, char *info)
 {
     FILE *error_log_fp = fopen("log/error.log", "a");

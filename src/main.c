@@ -1,13 +1,19 @@
+/*
+ Copyright (c) 2013 by XiongBo.  All Rights Reserved.
+*/
 #include "head/unp.h"
 #include "head/init.h"
 #include "head/conf.h"
 #include "head/svr.h"
-#define MAX_DIR_LENGTH 50
 
+/**
+ * Main Function
+ * @param  argc 
+ * @param  argv 
+ * @return      
+ */
 int main(int argc, char const *argv[])
 {
-    char *dir = (char *) malloc(sizeof(char) * (MAX_DIR_LENGTH));
-    ParseCfgSeverDir(dir);
-    StartServer(dir, ParseCfgServerPort());
+    RunServer();
     return 0;
 }

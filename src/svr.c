@@ -1,17 +1,24 @@
+/*
+ Copyright (c) 2013 by XiongBo.  All Rights Reserved.
+*/
+
 #include "head/unp.h"
 #include "head/svr.h"
 #include "head/log.h"
+#include "head/conf.h"
 #include "evlib/include/event.h"
 #include "evlib/include/evhttp.h"
 
-#define CONNMAX 10
-#define BYTES 1024
+#define MAX_DIR_LENGTH 50
 
-int listenfd, clients[CONNMAX];
-
-
+/**
+ * Callback function
+ * @param req 
+ * @param arg
+ */ 
 static void RequestHandler(struct evhttp_request *req, void *arg)
 {
+  
   struct evbuffer *returnbuffer = evbuffer_new();
 
   evbuffer_add_printf(returnbuffer, "Thanks for the request!");
@@ -20,12 +27,28 @@ static void RequestHandler(struct evhttp_request *req, void *arg)
   return;
 }
 
-void StartServer(char *dir, int port)
+/**
+ * Run http server
+ */
+/** TODO: daemonize */
+void RunServer()
 {
-    struct evhttp *http_server = NULL;
+    /* Parse configure file */
+    char *http_opt_dir = (char *) malloc(sizeof(char) * (MAX_DIR_LENGTH));
+    ParseCfgSeverDir(http_opt_dir);
+    int http_opt_port = ParseCfgServerPort();
+    char *http_opt_listen = "0.0.0.0";
+
+    char info[50];
+    sprintf(info, "Server started at port no. %d with root directory as %s", http_opt_port, http_opt_dir);
+    ErrorLog("NORMAL", info);
+
+    /* Initialize http object */
+    struct evhttp *http;
     event_init();
-    http_server = evhttp_start("0.0.0.0", port);
-    evhttp_set_gencb(http_server, RequestHandler, NULL);
-    printf("Server started at port no. %s%d%s with root directory as %s%s%s\n","\033[92m",port,"\033[0m","\033[92m",dir,"\033[0m");
+    http = evhttp_start(http_opt_listen, http_opt_port);
+
+    /* Set callback function */
+    evhttp_set_gencb(http, RequestHandler, NULL);
     event_dispatch();
 }
