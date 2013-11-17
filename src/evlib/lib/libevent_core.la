@@ -5,10 +5,10 @@
 # It is necessary for linking the library.
 
 # The name that we can dlopen(3).
-dlname='libevent_core-1.4.so.2'
+dlname=''
 
 # Names of this library.
-library_names='libevent_core-1.4.so.2.2.0 libevent_core-1.4.so.2 libevent_core.so'
+library_names=''
 
 # The name of the static archive.
 old_library='libevent_core.a'
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/alexbob/BFE/lib/libevent-1.4.14b-stable/lib/lib'
+libdir='/home/alexbob/BFE/websvr/src/evlib/lib'

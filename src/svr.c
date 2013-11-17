@@ -27,12 +27,13 @@ static void RequestHandler(struct evhttp_request *req, void *arg)
     struct evbuffer *evb = evbuffer_new();
 
     struct evhttp_connection *evcon = req->evcon;
-    struct evbuffer *connect_inpuf_buf = evcon->input_buffer;
-    char *first_line = evbuffer_readline(connect_inpuf_buf);
+    struct evbuffer *conn_inpuf_buf = evcon->input_buffer;
+
+    /* libevent bug EVBUFFER_LENGTH(x)	(x)->len  */
+    conn_inpuf_buf->off = conn_inpuf_buf->totallen;
+    char *first_line = evbuffer_readline(conn_inpuf_buf);
     const char *path;
     const char *user_agent = evhttp_find_header(req->input_headers, "User-Agent");
-
-
 
     char info[100];
     sprintf(info, "\"%s\"-\"%s\"", first_line, user_agent);
