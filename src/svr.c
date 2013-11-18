@@ -39,6 +39,11 @@ static void RequestHandler(struct evhttp_request *req, void *arg)
     sprintf(info, "\"%s\"-\"%s\"", first_line, user_agent);
     AccessLog(req->remote_host, info);
 
+    evbuffer_add_printf(evb, "<head>\n hello </head>\n");
+
+    evhttp_add_header(req->output_headers, "Content-Type", "text/html");
+
+    evhttp_send_reply(req, 200, "OK", evb);
 
     evbuffer_free(evb);
 }
