@@ -20,6 +20,7 @@
  */
 static void RequestHandler(struct evhttp_request *req, void *arg)
 {
+
     const char *rootdir = arg;
     const char *uri = req->uri;
 
@@ -29,17 +30,14 @@ static void RequestHandler(struct evhttp_request *req, void *arg)
     struct evhttp_connection *evcon = req->evcon;
     struct evbuffer *conn_inpuf_buf = evcon->input_buffer;
 
-    /* libevent bug EVBUFFER_LENGTH(x)	(x)->len  */
+    /* Record User request and agent to log */
+    // libevent bug EVBUFFER_LENGTH(x)	(x)->len
     conn_inpuf_buf->off = conn_inpuf_buf->totallen;
     char *first_line = evbuffer_readline(conn_inpuf_buf);
-    const char *path;
-    const char *user_agent = evhttp_find_header(req->input_headers, "User-Agent");
+    char *user_agent = evhttp_find_header(req->input_headers, "User-Agent");
+    AccessLog(req->remote_host, first_line, user_agent);
 
-    char info[100];
-    sprintf(info, "\"%s\"-\"%s\"", first_line, user_agent);
-    AccessLog(req->remote_host, info);
-
-    evbuffer_add_printf(evb, "<head>\n hello </head>\n");
+    evbuffer_add_printf(evb, "<h1>\n hello </h1>\n");
 
     evhttp_add_header(req->output_headers, "Content-Type", "text/html");
 
@@ -51,7 +49,6 @@ static void RequestHandler(struct evhttp_request *req, void *arg)
 /**
  * Run http server
  */
-/** TODO: daemonize */
 void RunServer()
 {
     /* Parse configure file */
@@ -60,10 +57,9 @@ void RunServer()
     int http_opt_port = ParseCfgServerPort();
     char *http_opt_addr = "0.0.0.0";
 
-    char info[50];
+    char info[100];
     sprintf(info, "Server started at port no. %d with root directory as %s", http_opt_port, http_opt_dir);
     ErrorLog("NORMAL", info);
-
 
     /* Initialize http object */
     struct event_base *base;

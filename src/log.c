@@ -10,7 +10,7 @@
  * @param ip   user ip
  * @param info request information
  */
-void AccessLog(char *ip, char *info)
+void AccessLog(char *ip, char *first_line, char *user_agent)
 {
     FILE *access_log_fp = fopen("log/access.log", "a");
     char buff[25];
@@ -22,7 +22,7 @@ void AccessLog(char *ip, char *info)
     time_t timer;
     time(&timer);
     strftime(buff, 25, "%Y-%m-%d %H:%M:%S", localtime (&timer));
-    fprintf(access_log_fp, "%s  - - [%s]  \"%s\"\n", ip, buff, info);
+    fprintf(access_log_fp, "%s  - - [%s]  \"%s\" - \"%s\"\n", ip, buff, first_line, user_agent);
     fclose(access_log_fp);
 }
 
