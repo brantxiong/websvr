@@ -26,6 +26,7 @@ Copyright (c) 2013 by XiongBo.  All Rights Reserved.
 #include	<sys/wait.h>
 #include	<sys/un.h>		/* for Unix domain sockets */
 #include    <sys/queue.h>
+#include    <dirent.h>
 
 #ifdef	HAVE_SYS_SELECT_H
 # include	<sys/select.h>	/* for convenience */
